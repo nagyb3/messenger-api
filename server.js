@@ -42,6 +42,24 @@ app.post("/messages/create", asyncHandler(async(req, res) => {
     });
 }));
 
+app.get("/users", asyncHandler(async(req, res) => {
+    const userNames = await User.find({});
+    res.json({
+        "allUsers": userNames
+    })
+}));
+
+app.post("/signup", asyncHandler(async(req, res) => {
+    //TODO: check if username already exists
+    await User.create({
+        username: req.body.username,
+        password: req.body.password
+    })
+    res.json({
+        "message": "user created"
+    })
+}));
+
 mongoose.set('strictQuery', false);
 const mongoDB = process.env.DATABASE_URL;
 const db = mongoose.connection;
