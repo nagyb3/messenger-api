@@ -39,7 +39,13 @@ const mongoDB = process.env.DATABASE_URL;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
-main().catch((err) => console.log(err));
+main()
+.then(err =>{
+  if (!err) {
+    console.log('Connected to db successfully!')
+  }
+} )
+.catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
 }
@@ -79,8 +85,6 @@ app.get("/users", asyncHandler(async(req, res) => {
 }));
 
 app.post("/signup", bodyParser.json(), async(req, res) => {
-  console.log(req.body.username)
-  console.log(req.body.password)
   if (req.body.username === undefined || req.body.password === undefined) {
     res.send("No username or password given!");
   } else {
@@ -90,7 +94,7 @@ app.post("/signup", bodyParser.json(), async(req, res) => {
       password: hashPassword
   });
   await newUser.save();
-  res.send("Sucess!!");
+  res.sendStatus(200);
 }
 })
 
