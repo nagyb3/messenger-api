@@ -88,11 +88,11 @@ app.get("/users/exists/:userid", bodyParser.json(), asyncHandler(async(req, res)
   const doesUserExit = await User.exists({ username: req.params.userid });
   if (doesUserExit !== null) {
     res.json({
-      "exists": "true"
+      "exists": true
     })
   } else {
     res.json({
-      "exists": "false"
+      "exists": false
     })
   }
 }))
