@@ -84,6 +84,19 @@ app.get("/users", asyncHandler(async(req, res) => {
     })
 }));
 
+app.get("/users/exists/:userid", bodyParser.json(), asyncHandler(async(req, res) => {
+  const doesUserExit = await User.exists({ username: req.params.userid });
+  if (doesUserExit !== null) {
+    res.json({
+      "exists": "true"
+    })
+  } else {
+    res.json({
+      "exists": "false"
+    })
+  }
+}))
+
 app.post("/signup", bodyParser.json(), async(req, res) => {
   if (req.body.username === undefined || req.body.password === undefined || req.body.email === undefined) {
     res.send("No username or password given!");
