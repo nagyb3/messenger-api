@@ -85,13 +85,14 @@ app.get("/users", asyncHandler(async(req, res) => {
 }));
 
 app.post("/signup", bodyParser.json(), async(req, res) => {
-  if (req.body.username === undefined || req.body.password === undefined) {
+  if (req.body.username === undefined || req.body.password === undefined || req.body.email === undefined) {
     res.send("No username or password given!");
   } else {
   const hashPassword = await bcryptjs.hash(req.body.password, 10);
   const newUser = new User({
       username: req.body.username,
-      password: hashPassword
+      password: hashPassword,
+      email: req.body.email
   });
   await newUser.save();
   res.sendStatus(200);
